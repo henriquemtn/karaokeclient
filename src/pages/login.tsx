@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase/firebase";
+import { auth, firestore } from "../firebase/firebase";
 import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -25,12 +26,29 @@ export default function Login() {
             const result = await signInWithPopup(auth, provider);
     
             const user = result.user;
-            console.log("Google login successful:", user);
+            console.log('Google login successful:', user);
+    
+            // Use UID as the document name
+            const userDocRef = doc(firestore, 'users', user.uid);
+    
+            // Check if the user is new based on metadata
+            const isNewUser =
+                user.metadata.creationTime === user.metadata.lastSignInTime;
+    
+            if (isNewUser) {
+                // If the user is new, add the user data to the "users" collection
+                const userData = {
+                    displayName: user.displayName,
+                    email: user.email,
+                    uid: user.uid,
+                };
+    
+                await setDoc(userDocRef, userData);
+            }
         } catch (error) {
-            console.error("Error with Google login:", error);
+            console.error('Error with Google login:', error);
         }
     };
-    
     const handleEmailPasswordLogin = async (email: string, password: string) => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
