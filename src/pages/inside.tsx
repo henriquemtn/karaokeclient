@@ -237,16 +237,21 @@ export default function Inside() {
                                         />
                                     </div>
                                     <div className="pt-4">
-                                        {musics.length > 0 ? (
-                                            musics.map((music) => (
+                                        {musics
+                                            .filter((music) =>
+                                                music.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                                music.artist.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                                music.album.toLowerCase().includes(searchTerm.toLowerCase())
+                                            )
+                                            .map((music) => (
                                                 <Music
                                                     key={music.id}
                                                     title={music.title}
                                                     artist={music.artist}
                                                     onAdd={() => handleAddToPlaylist(music.id, music.title)}
                                                 />
-                                            ))
-                                        ) : (
+                                            ))}
+                                        {musics.length === 0 && (
                                             <div className='text-white font-medium'>
                                                 Nenhuma música encontrada!
                                             </div>
