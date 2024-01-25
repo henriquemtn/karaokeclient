@@ -1,26 +1,41 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase/firebase";
+import { useNavigate, useParams } from "react-router-dom";
+import { auth, firestore } from "../firebase/firebase";
 import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, getAuth } from 'firebase/auth';
+import getHouseInfo from '../api/getHouseInfo';
 
 export default function Checkin() {
-    const [customerName, setCustomerName] = useState('');
+    const { houseId } = useParams();
+    const safeHouseId = houseId ?? '';
+    const [houseName, setHouseName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const user = auth.currentUser;
 
-
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                // Se o usuário já estiver autenticado, redirecione para a tela principal
-                navigate("/checkin/u40yZ6xuSrt7tkEa4MWU");
+        const fetchData = async () => {
+            try {
+                // Obtenha informações da casa com base no ID da casa
+                const houseInfo = await getHouseInfo(firestore, safeHouseId);
+        
+                if (houseInfo) {
+                    // Se as informações da casa existem, atualize o estado e faça qualquer outra coisa necessária
+                    setHouseName(houseInfo.houseName);
+                    // Faça o que precisar com as informações da casa aqui
+    
+                } else {
+                    console.error('Informações da casa não encontradas.');
+                }
+            } catch (error) {
+                console.error('Erro ao obter informações da casa:', error);
             }
-        });
+        };
+    
+        fetchData();
+    }, [safeHouseId]);
+    
 
-        return () => unsubscribe();
-    }, [navigate]);
 
     const karaokeCheckin = () => {
         navigate("/inside/u40yZ6xuSrt7tkEa4MWU");
@@ -71,7 +86,7 @@ export default function Checkin() {
 
                             <div className="text-center">
                                 <p className="mb-6 text-2xl font-semibold leading-5 text-slate-900">
-                                    Nome do Karaoke
+                                    {houseName}
                                 </p>
                                 <div className='flex justify-center items-center gap-2'>
                                     <img src={user?.photoURL || "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"} alt="Avatar" className='h-10 w-10 rounded-full' />
@@ -100,8 +115,7 @@ export default function Checkin() {
             </div>
         );
     }
-
-
+    
     return (
         <>
             <div id="login-popup"
@@ -126,10 +140,11 @@ export default function Checkin() {
 
                             <div className="text-center">
                                 <p className="mb-3 text-2xl font-semibold leading-5 text-slate-900">
-                                    Checkin: NomeDoKaraoke
+                                    Checkin:                                     {houseName}
+
                                 </p>
                                 <p className="mt-2 text-sm leading-4 text-slate-600">
-                                    You must be logged in to perform this action.
+                                   Você precisa de uma conta para continuar 
                                 </p>
                             </div>
 
@@ -139,14 +154,14 @@ export default function Checkin() {
                                     onClick={handleGoogleLogin}
                                     className="inline-flex h-10 w-full items-center justify-center gap-2 rounded border border-slate-300 bg-white p-2 text-sm font-medium text-black outline-none focus:ring-2 focus:ring-[#333] focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-60"><img
                                         src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google"
-                                        className="h-[18px] w-[18px] " />Continue with
+                                        className="h-[18px] w-[18px] " />Continue com o
                                     Google
                                 </button>
                             </div>
 
                             <div className="flex w-full items-center gap-2 py-6 text-sm text-slate-600">
                                 <div className="h-px w-full bg-slate-200"></div>
-                                OR
+                                OU
                                 <div className="h-px w-full bg-slate-200"></div>
                             </div>
 
@@ -156,17 +171,6 @@ export default function Checkin() {
                                     handleEmailPasswordLogin(email, password);
                                 }}
                             >
-                                <label>
-                                    Nome:
-                                    <input
-                                        type="text"
-                                        value={customerName}
-                                        onChange={(e) => setCustomerName(e.target.value)}
-                                        required
-                                        className="block w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-black focus:ring-offset-1"
-                                    />
-                                </label>
-                                <br />
                                 <label>
                                     Email:
                                     <input
@@ -190,12 +194,12 @@ export default function Checkin() {
                                 </label>
                                 <br />
                                 <button className="inline-flex w-full items-center justify-center rounded-lg bg-black p-2 py-3 text-sm font-medium text-white outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 disabled:bg-gray-400"
-                                    type="submit">Login with Email/Password</button>
+                                 type="submit">Fazer Login</button>
                             </form>
 
                             <div className="mt-6 text-center text-sm text-slate-600">
-                                Don't have an account?
-                                <a href="/signup" className="font-medium text-[#4285f4]">Sign up</a>
+                                Não possui uma conta?
+                                <a href="/register" className="pl-1 font-medium text-[#4285f4]">Registrar-se</a>
                             </div>
                         </div>
                     </div>
@@ -204,4 +208,3 @@ export default function Checkin() {
         </>
     );
 };
-

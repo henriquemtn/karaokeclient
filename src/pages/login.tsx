@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, firestore } from "../firebase/firebase";
 import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
+import toast from 'react-hot-toast';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -53,12 +54,14 @@ export default function Login() {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             console.log('Email/password login successful');
+            toast.success("Login feito com sucesso!")
     
             // Limpar os campos após o login bem-sucedido
             setEmail('');
             setPassword('');
         } catch (error) {
             console.error('Error with email/password login:', error);
+            toast.error("Email ou senha incorretos!")
         }
     };
 

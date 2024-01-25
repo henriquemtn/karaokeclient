@@ -13,7 +13,7 @@ export default function RouterManager() {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/checkin/:id" element={<Checkin />} />
+                <Route path="/checkin/:houseId" element={<Checkin />} />
                 <Route path="/inside/:houseId" element={<Inside />} />
                 <Route path="/karaoke/:houseId" element={<Karaoke />} />
             </Routes>
