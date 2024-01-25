@@ -12,7 +12,6 @@ import Music from '../components/inside/Music';
 import OtherSong from '../components/inside/OtherSong';
 import NextSong from '../components/karaoke/NextSong';
 import addOnPlaylist from '../api/addOnPlaylist';
-import { endOfMusic } from '../api/endOfMusic';
 import { getUserInfo } from '../api/getUserInfo';
 import toast from 'react-hot-toast';
 
@@ -87,17 +86,6 @@ export default function Inside() {
 
         fetchMusics();
     }, []);
-
-    const handleEndOfMusic = () => {
-        if (houseId) {
-            endOfMusic(houseId);
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000); // Espera 2 segundos antes de recarregar a página
-        } else {
-            console.error('houseId está indefinido.');
-        }
-    };
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -196,12 +184,6 @@ export default function Inside() {
 
 
                 <div className='flex fixed bottom-0 left-0 p-4 w-full'>
-                    <Button
-                        outline
-                        color='roxo'
-                        label='Fim da Música'
-                        onClick={handleEndOfMusic}
-                    />
                     <Button
                         outline
                         color='roxo'
