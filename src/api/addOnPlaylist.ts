@@ -30,10 +30,17 @@ const addOnPlaylist = async ({ houseId, musicId, userId, displayName }: AddOnPla
         return;
       }
 
-      const isMusicInPlaylist = houseData.playlist.some((item: any) => item.musicId === musicId);
+      const isMusicInPlaylist = houseData.playlist.some((item: any) => item.musicId === musicId && item.userId === userId);
 
       if (isMusicInPlaylist) {
-        console.error('A música já está na playlist.');
+        console.error('O usuário já adicionou esta música à playlist.');
+        return;
+      }
+
+      const isUserInPlaylist = houseData.playlist.some((item: any) => item.userId === userId);
+
+      if (isUserInPlaylist) {
+        console.error('O usuário já adicionou uma música à playlist e não pode adicionar outra.');
         return;
       }
 

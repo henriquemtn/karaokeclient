@@ -103,30 +103,38 @@ export default function Inside() {
             try {
                 // Obtenha informações adicionais do usuário, incluindo o nome
                 const userInfo = await getUserInfo(user.uid);
-
+    
                 if (userInfo && userInfo.displayName) {
                     // Verifique se a música já está na playlist
                     const isMusicInPlaylist = playlist.some(item => item.musicId === musicId);
-
+    
                     if (isMusicInPlaylist) {
                         toast('A música já está na playlist.', {
                             icon: '✋',
                         });
                     } else {
-                        // Se o nome do usuário estiver disponível e a música não estiver na playlist, chame addOnPlaylist
-                        addOnPlaylist({
-                            houseId,
-                            musicId,
-                            userId: user.uid,
-                            displayName: userInfo.displayName,
-                        });
-
-                        console.log('Música adicionada com sucesso!');
-                        toast.success('Música adicionada com sucesso!');
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 2000); // Espera 2 segundos antes de recarregar a página
-
+                        // Verifique se o usuário já colocou uma música na playlist
+                        const isUserInPlaylist = playlist.some(item => item.userId === user.uid);
+    
+                        if (isUserInPlaylist) {
+                            toast('Você já colocou uma música na playlist.', {
+                                icon: '✋',
+                            });
+                        } else {
+                            // Se o nome do usuário estiver disponível e a música não estiver na playlist, chame addOnPlaylist
+                            addOnPlaylist({
+                                houseId,
+                                musicId,
+                                userId: user.uid,
+                                displayName: userInfo.displayName,
+                            });
+    
+                            console.log('Música adicionada com sucesso!');
+                            toast.success('Música adicionada com sucesso!');
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000); // Espera 2 segundos antes de recarregar a página
+                        }
                     }
                 } else {
                     console.error('Nome do usuário não encontrado.');
@@ -138,7 +146,7 @@ export default function Inside() {
             }
         }
     };
-
+    
 
     const handleLogout = () => {
         navigate("/")

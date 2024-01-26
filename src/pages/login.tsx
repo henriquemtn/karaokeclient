@@ -14,6 +14,7 @@ export default function Login() {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
                 // Se o usuário já estiver autenticado, redirecione para a tela principal
+                console.log("Usuário autenticado:", user);
                 navigate("/");
             }
         });
