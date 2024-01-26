@@ -26,6 +26,14 @@ export default function Home() {
         }
     };
 
+    useEffect(() => {
+        // Verifica se o usuário está autenticado
+        if (!user) {
+            // Se não estiver autenticado, redireciona para a tela de login
+            navigate('/login');
+        }
+    }, [user, navigate]);
+
     return (
         <div className="flex flex-col md:justify-between min-h-screen p-4 gap-4 bg-[#333]">
             <div className="w-full h-[100px] bg-purple-700 flex items-center px-4 shadow-md justify-between">
