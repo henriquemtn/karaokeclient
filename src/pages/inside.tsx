@@ -123,6 +123,9 @@ export default function Inside() {
 
                         console.log('Música adicionada com sucesso!');
                         toast.success('Música adicionada com sucesso!');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000); // Espera 2 segundos antes de recarregar a página
 
                     }
                 } else {
