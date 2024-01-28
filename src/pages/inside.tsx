@@ -162,37 +162,35 @@ export default function Inside() {
                         <h1>Sair</h1>
                     </div>
                 </div>
-                {playlist.length > 0 ? (
-                    playlist.map((item, index) => {
-                        if (index === 0) {
-                            // Primeira música na playlist
-                            return (
-                                <NextSong
-                                    key={index}
-                                    music={item.musicInfo.title}
-                                    artist={item.musicInfo.artist}
-                                    usuario={`${item.displayName} está cantando`}
-                                />
-                            );
-                        } else {
-                            // Outras músicas na playlist
-                            return (
-                                <OtherSong
-                                    key={index}
-                                    music={item.musicInfo.title}
-                                    artist={item.musicInfo.artist}
-                                    usuario={item.displayName}
-                                />
-                            );
-                        }
-                    })
-                ) : (
-                    <div className='text-white font-medium'>Nenhuma música na playlist!</div>
-                )}
-
-
-
-
+                <div style={{ overflowY: 'auto', maxHeight: '400px' }}>
+                    {playlist.length > 0 ? (
+                        playlist.map((item, index) => {
+                            if (index === 0) {
+                                // Primeira música na playlist
+                                return (
+                                    <NextSong
+                                        key={index}
+                                        music={item.musicInfo.title}
+                                        artist={item.musicInfo.artist}
+                                        usuario={`${item.displayName} está cantando`}
+                                    />
+                                );
+                            } else {
+                                // Outras músicas na playlist
+                                return (
+                                    <OtherSong
+                                        key={index}
+                                        music={item.musicInfo.title}
+                                        artist={item.musicInfo.artist}
+                                        usuario={item.displayName}
+                                    />
+                                );
+                            }
+                        })
+                    ) : (
+                        <div className='text-white font-medium'>Nenhuma música na playlist!</div>
+                    )}
+                </div>
 
                 <div className='flex fixed bottom-0 left-0 p-4 w-full'>
                     <Button
