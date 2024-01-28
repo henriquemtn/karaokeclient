@@ -31,8 +31,8 @@ export default function Home() {
     };
     
     return (
-        <div className="flex flex-col md:justify-between min-h-screen p-4 gap-4 bg-[#333]">
-            <div className="w-full h-[100px] bg-purple-700 flex items-center px-4 shadow-md justify-between">
+        <div className="flex flex-col md:justify-between min-h-screen p-4 gap-4 bg-stone-900">
+            <div className="w-full h-[100px] bg-stone-800 rounded-md flex items-center px-4 shadow-md justify-between">
                 <div className='flex items-center gap-2'>
                     <img src={user?.photoURL || "https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg"} alt="Avatar" className='h-16 w-16 rounded-full' />
                     <h1 className="text-white">{user?.displayName || 'Usuário'}</h1>
@@ -42,7 +42,7 @@ export default function Home() {
                 </p>
             </div>
 
-            <div className="w-full h-[400px] bg-purple-700 shadow-md p-4">
+            <div className="w-full h-[400px] bg-stone-800 shadow-md p-4">
                 <Playlist />
             </div>
         </div>

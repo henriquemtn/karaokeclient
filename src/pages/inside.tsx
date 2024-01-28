@@ -224,12 +224,12 @@ export default function Inside() {
                                         <input
                                             type="text"
                                             placeholder="Digite o nome da música, artista.."
-                                            className="w-full h-[34px] p-3 text-white bg-[#424262] rounded-md"
+                                            className="w-full h-[34px] p-3 text-white bg-[#424262] rounded-md mb-1"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                         />
                                     </div>
-                                    <div className="pt-4" style={{ overflowY: 'auto', maxHeight: 'auto' }}>
+                                    <div className="pt-4" style={{ overflowY: 'auto', maxHeight: '700px' }}>
                                         {musics
                                             .filter((music) =>
                                                 music.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
