@@ -86,7 +86,7 @@ export default function Karaoke() {
                     <>
                         <div className="w-1/4">
                             <NextSong
-                                music={playlist[0]?.musicName}
+                                music={playlist[0]?.musicInfo.name}
                                 artist={playlist[0]?.musicInfo.artist}
                                 usuario={`${playlist[0]?.displayName} está cantando`}
                             />
@@ -94,7 +94,7 @@ export default function Karaoke() {
                         {playlist.slice(1).map((item, index) => (
                             <div className="w-1/4" key={index}>
                                 <BelowKaraoke
-                                    music={item?.musicName}
+                                    music={item?.musicInfo.name}
                                     artist={item?.musicInfo.artist}
                                     usuario={item?.displayName}
                                 />
